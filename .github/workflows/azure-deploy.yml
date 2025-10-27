@@ -6,17 +6,22 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: quantum-blue-chatbot
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  PYTHON_VERSION: '3.9'
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Set up Python version
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: ${{ env.PYTHON_VERSION }}
     
     - name: Create and start virtual environment
       run: |
@@ -28,17 +33,21 @@ jobs:
         source venv/bin/activate
         pip install -r requirements.txt
     
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'quantum-blue-chatbot'
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
         slot-name: 'production'
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-        package: .
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     
     - name: Restart Azure App Service
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az webapp restart --name quantum-blue-chatbot --resource-group your-resource-group
+          az webapp restart --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
