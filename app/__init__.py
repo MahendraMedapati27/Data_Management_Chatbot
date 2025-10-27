@@ -1,0 +1,120 @@
+from flask import Flask, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_cors import CORS
+from flask_mail import Mail
+from config import Config
+from pathlib import Path
+import logging
+
+db = SQLAlchemy()
+login_manager = LoginManager()
+mail = Mail()
+
+def create_app(config_class=Config):
+    """Application factory"""
+    # Ensure Flask knows where to find top-level templates and static assets
+    base_dir = Path(__file__).resolve().parent
+    app_root = base_dir.parent
+    templates_path = app_root / 'templates'
+    static_path = app_root / 'static'
+
+    app = Flask(
+        __name__,
+        template_folder=str(templates_path),
+        static_folder=str(static_path),
+    )
+    app.config.from_object(config_class)
+    
+    # Initialize extensions
+    db.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    mail.init_app(app)
+    CORS(app)
+    
+    # Register blueprints
+    from app.auth import auth_bp
+    from app.chatbot import chatbot_bp
+    from app.whatsapp_webhook import whatsapp_bp
+    
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(chatbot_bp, url_prefix='/chat')
+    app.register_blueprint(whatsapp_bp, url_prefix='/webhook')
+    
+    # Root route
+    @app.route('/')
+    def index():
+        return redirect(url_for('chatbot.chat'))
+    
+    # Health check endpoint for Azure monitoring
+    @app.route('/health')
+    def health():
+        return {'status': 'healthy', 'service': 'quantum-blue-chatbot'}, 200
+    
+    # Create database tables
+    with app.app_context():
+        def _mssql_maintenance():
+            try:
+                # Expand otp_secret and phone columns if too small (idempotent)
+                from sqlalchemy import text
+                engine = db.get_engine()
+                with engine.connect() as conn:
+                    # Increase phone column to NVARCHAR(50)
+                    conn.execute(text("""
+IF EXISTS (SELECT 1 FROM sys.columns c
+           JOIN sys.objects o ON o.object_id = c.object_id
+           WHERE o.name = 'users' AND c.name = 'phone' AND c.max_length < 100)
+BEGIN
+    ALTER TABLE dbo.users ALTER COLUMN phone NVARCHAR(50) NOT NULL;
+END
+"""))
+                    # Increase otp_secret column to NVARCHAR(255)
+                    conn.execute(text("""
+IF EXISTS (SELECT 1 FROM sys.columns c
+           JOIN sys.objects o ON o.object_id = c.object_id
+           WHERE o.name = 'users' AND c.name = 'otp_secret' AND c.max_length < 510)
+BEGIN
+    ALTER TABLE dbo.users ALTER COLUMN otp_secret NVARCHAR(255) NULL;
+END
+"""))
+            except Exception:
+                # Non-fatal: continue app startup even if migration fails
+                pass
+
+        # Attempt to init DB with optional retries if Azure is required
+        require_azure = bool(app.config.get('REQUIRE_AZURE_DB')) and str(app.config.get('SQLALCHEMY_DATABASE_URI', '')).startswith('mssql')
+        attempts = int(app.config.get('DB_CONNECT_RETRIES', 3)) if require_azure else 1
+        last_err = None
+        for _ in range(attempts):
+            try:
+                db.create_all()
+                if str(app.config.get('SQLALCHEMY_DATABASE_URI', '')).startswith('mssql'):
+                    _mssql_maintenance()
+                last_err = None
+                break
+            except Exception as e:
+                last_err = e
+        if last_err is not None:
+            if require_azure:
+                # Do not fallback; surface error
+                raise last_err
+            logging.warning(f"Primary DB init failed ({type(last_err).__name__}): {last_err}. Falling back to SQLite.")
+            try:
+                app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///quantum_blue.db'
+                db.session.remove()
+                try:
+                    db.engine.dispose()
+                except Exception:
+                    pass
+                db.create_all()
+            except Exception as e2:
+                logging.error(f"SQLite fallback failed ({type(e2).__name__}): {e2}")
+                raise
+    
+    return app
+
+@login_manager.user_loader
+def load_user(user_id):
+    from app.models import User
+    return User.query.get(int(user_id))

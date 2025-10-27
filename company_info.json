@@ -1,0 +1,74 @@
+﻿[
+  {
+    "company_name": "Tech Solutions Inc",
+    "founded": 2020,
+    "employees": 150,
+    "locations": ["New York", "San Francisco", "Austin"],
+    "services": ["Cloud Computing", "AI Solutions", "Consulting"],
+    "revenue_million_usd": 85.5,
+    "ceo": "Jessica Morgan",
+    "industries": ["Technology", "Software Development"],
+    "clients": ["Tesla", "Spotify", "NASA"],
+    "technologies": ["Python", "AWS", "TensorFlow", "Docker"]
+  },
+  {
+    "company_name": "GreenGrid Energy",
+    "founded": 2017,
+    "employees": 230,
+    "locations": ["Seattle", "Denver", "Portland"],
+    "services": ["Renewable Energy", "Smart Grids", "IoT Monitoring"],
+    "revenue_million_usd": 120.3,
+    "ceo": "Daniel Kim",
+    "industries": ["Energy", "IoT", "Sustainability"],
+    "clients": ["Shell", "Siemens", "GE"],
+    "technologies": ["C++", "Azure IoT", "React", "Node.js"]
+  },
+  {
+    "company_name": "HealthAI Labs",
+    "founded": 2018,
+    "employees": 320,
+    "locations": ["Boston", "Chicago", "San Diego"],
+    "services": ["AI Diagnostics", "Predictive Analytics", "Healthcare Automation"],
+    "revenue_million_usd": 210.8,
+    "ceo": "Dr. Sarah Thompson",
+    "industries": ["Healthcare", "AI", "Biotechnology"],
+    "clients": ["Pfizer", "Mayo Clinic", "Johnson & Johnson"],
+    "technologies": ["PyTorch", "Kubernetes", "PostgreSQL", "Flask"]
+  },
+  {
+    "company_name": "FinNext Global",
+    "founded": 2015,
+    "employees": 540,
+    "locations": ["London", "New York", "Toronto"],
+    "services": ["Financial Analytics", "Risk Management", "Blockchain Solutions"],
+    "revenue_million_usd": 380.2,
+    "ceo": "Michael Reynolds",
+    "industries": ["Finance", "Blockchain", "Data Analytics"],
+    "clients": ["HSBC", "Barclays", "Goldman Sachs"],
+    "technologies": ["Solidity", "Python", "Snowflake", "React"]
+  },
+  {
+    "company_name": "EduVerse Technologies",
+    "founded": 2021,
+    "employees": 90,
+    "locations": ["Los Angeles", "Miami"],
+    "services": ["E-Learning Platforms", "AI Tutors", "Content Creation"],
+    "revenue_million_usd": 45.9,
+    "ceo": "Anita Deshmukh",
+    "industries": ["Education", "AI", "Software"],
+    "clients": ["Coursera", "Udemy", "Byju’s"],
+    "technologies": ["Next.js", "OpenAI API", "MongoDB", "Firebase"]
+  },
+  {
+    "company_name": "AgriSense Data Systems",
+    "founded": 2019,
+    "employees": 175,
+    "locations": ["Kansas City", "Dallas"],
+    "services": ["Crop Monitoring", "AI Forecasting", "Drone Imaging"],
+    "revenue_million_usd": 98.6,
+    "ceo": "Rajesh Patel",
+    "industries": ["Agriculture", "Data Science", "IoT"],
+    "clients": ["John Deere", "Bayer CropScience", "Cargill"],
+    "technologies": ["Python", "AWS Lambda", "FastAPI", "IoT Core"]
+  }
+]

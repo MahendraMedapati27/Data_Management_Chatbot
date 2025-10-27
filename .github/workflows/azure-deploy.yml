@@ -1,0 +1,44 @@
+# Azure App Service GitHub Actions Workflow
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python version
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Create and start virtual environment
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+    
+    - name: Install dependencies
+      run: |
+        source venv/bin/activate
+        pip install -r requirements.txt
+    
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'quantum-blue-chatbot'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+        package: .
+    
+    - name: Restart Azure App Service
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az webapp restart --name quantum-blue-chatbot --resource-group your-resource-group

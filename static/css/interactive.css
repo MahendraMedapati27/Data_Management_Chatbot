@@ -1,0 +1,209 @@
+/* Interactive buttons styling */
+.interactive-buttons {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 10px;
+    animation: slideInFromBottom 0.3s ease-out;
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.interactive-buttons h6 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.product-btn, .order-btn, .quantity-btn {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    min-width: 120px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+}
+
+.product-btn {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.product-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0b5ed7 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.product-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.product-info {
+    text-align: center;
+    line-height: 1.4;
+}
+
+.product-info strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.product-info small {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.order-btn {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #17a2b8;
+    color: #17a2b8;
+}
+
+.order-btn:hover {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
+.quantity-btn {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    min-width: 60px;
+}
+
+.quantity-btn:hover {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #5a6268 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Quantity selection styling */
+.quantity-selection {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.quantity-selection .alert {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.quantity-selection h6 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.quantity-selection .input-group {
+    margin-top: 10px;
+}
+
+.quantity-selection .form-control {
+    border-radius: 8px 0 0 8px;
+    border: 2px solid #dee2e6;
+}
+
+.quantity-selection .btn {
+    border-radius: 0 8px 8px 0;
+    border: 2px solid var(--primary-color);
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #157347 100%) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #b02a37 100%) !important;
+}
+
+/* Responsive interactive buttons */
+@media (max-width: 768px) {
+    .interactive-buttons {
+        padding: 15px;
+    }
+    
+    .product-btn, .order-btn, .quantity-btn {
+        min-width: 100px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .product-info strong {
+        font-size: 0.8rem;
+    }
+    
+    .product-info small {
+        font-size: 0.7rem;
+    }
+}
+
+/* Animation for button interactions */
+.product-btn:active, .order-btn:active, .quantity-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Hover effects for interactive elements */
+.interactive-buttons:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+/* Loading state for buttons */
+.btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
