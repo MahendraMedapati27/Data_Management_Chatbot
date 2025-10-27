@@ -338,4 +338,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 **🚀 Ready to deploy?** Follow the [Azure Deployment Guide](AZURE_DEPLOYMENT_GUIDE.md) to get started!
 
-**📱 Want WhatsApp integration?** Check out the [WhatsApp Setup Guide](WHATSAPP_SETUP_GUIDE.md)!
+**📱 Want WhatsApp integration?** Check out the [WhatsApp Setup Guide](WHATSAPP_SETUP_GUIDE.md)!#   D e p l o y m e n t   T e s t   -   1 0 / 2 7 / 2 0 2 5   1 4 : 1 3 : 4 3  
+ 
