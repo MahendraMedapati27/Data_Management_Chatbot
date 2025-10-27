@@ -31,6 +31,7 @@ class GroqService:
             api_key = current_app.config.get('GROQ_API_KEY')
             
             if api_key:
+                # Use the newer API format without proxies parameter
                 self.client = Groq(api_key=api_key)
                 logger.info('Groq client initialized')
             else:
