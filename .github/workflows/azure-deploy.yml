@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: quantum-blue-chatbot
+  AZURE_WEBAPP_NAME: my-chatbot-app-73d666
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   PYTHON_VERSION: '3.9'
 
@@ -50,4 +50,4 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az webapp restart --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+          az webapp restart --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group chatbot-rg
