@@ -58,7 +58,7 @@ def get_db_service():
         db_service = DatabaseService()
     return db_service
 
-@whatsapp_bp.route('/webhook', methods=['GET', 'POST'])
+@whatsapp_bp.route('/whatsapp', methods=['GET', 'POST'])
 def webhook():
     """WhatsApp webhook endpoint for receiving messages and verification"""
     
