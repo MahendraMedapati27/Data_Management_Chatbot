@@ -176,10 +176,26 @@ class WhatsAppService:
     def parse_webhook_message(self, webhook_data: Dict) -> Optional[Dict[str, Any]]:
         """Parse incoming WhatsApp webhook message"""
         try:
-            if webhook_data.get('field') != 'messages':
+            # Check if this is a messages webhook
+            if webhook_data.get('object') != 'whatsapp_business_account':
                 return None
             
-            value = webhook_data.get('value', {})
+            entries = webhook_data.get('entry', [])
+            if not entries:
+                return None
+            
+            # Get the first entry
+            entry = entries[0]
+            changes = entry.get('changes', [])
+            if not changes:
+                return None
+            
+            # Get the first change
+            change = changes[0]
+            if change.get('field') != 'messages':
+                return None
+            
+            value = change.get('value', {})
             messages = value.get('messages', [])
             contacts = value.get('contacts', [])
             
